@@ -9,21 +9,33 @@ import (
 
 func game(chances int) {
 	var guess int
+	var attempts int
 
 	rand.Seed(uint64(time.Now().UnixNano()))
 	number := rand.Intn(100)
 
 	fmt.Print("Let's start the game!\n")
-	for attempts := 0; chances > 0; chances-- {
+	for ; ; chances-- {
 		fmt.Print("\nEnter your guess: ")
 		fmt.Scan(&guess)
+
+		if guess == 0 {
+			fmt.Printf("Incorrect! Please insert a number or not zero.\n")
+			attempts++
+			continue
+		}
 
 		if number > guess {
 			fmt.Printf("Incorrect! The number is greater than %d.\n", guess)
 		} else if number < guess {
 			fmt.Printf("Incorrect! The number is less than %d.\n", guess)
 		} else {
-			fmt.Printf("Congratulations! You guessed the correct number in %d attempts.\n", attempts)
+			fmt.Printf("Congratulations! You guessed the correct number in %d attempts.\n", attempts+1)
+			break
+		}
+
+		if chances == 0 {
+			fmt.Printf("\nSorry, you've used all your %d attempts!", attempts+1)
 			break
 		}
 
@@ -51,13 +63,13 @@ func main() {
 		switch choice {
 		case 1:
 			fmt.Println("\nGreat! You have selected the Easy difficulty level.")
-			chances = 10
+			chances = 9
 		case 2:
 			fmt.Println("\nGreat! You have selected the Medium difficulty level.")
-			chances = 5
+			chances = 4
 		case 3:
 			fmt.Println("\nGreat! You have selected the Hard difficulty level.")
-			chances = 3
+			chances = 2
 		default:
 			fmt.Print("\nIncorrect choice. Enter your choice: ")
 		}
